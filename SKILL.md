@@ -51,7 +51,7 @@ ls ~/.claude/plugins/marketplaces/ 2>/dev/null
 
 **Scan locally installed skills:**
 ```bash
-# Standard installation directory (marketplace/npx)
+# User unified skills directory
 for skill in ~/.agents/skills/*/; do
   [ -f "$skill/SKILL.md" ] && echo "$(basename "$skill"): $(head -20 "$skill/SKILL.md" | grep -A1 'description:' | tail -1 | sed 's/^ *//')"
 done
@@ -69,10 +69,59 @@ Type: {inferred}  Language: {lang}  Frameworks: {list}  Tools: {list}
 
 Plugins: {N} global enabled, {M} project disabled, ~{K} relevant
 Marketplace sources: {list}
-Locally installed (~/.agents/skills/): {count}
+User unified (~/.agents/skills/): {count}
   - {name}: {description snippet}...
 Custom/offline (~/.claude/local-skills/): {count}
   - {name}: {description snippet}...
+```
+
+---
+
+## Step 1.5: Register ~/.agents/skills
+
+**1. Check if ~/.agents/skills is registered as marketplace source:**
+```bash
+claude plugin marketplace list 2>/dev/null | grep -q "agents/skills" && echo "registered" || echo "not registered"
+```
+
+**2. If not registered, auto-register:**
+```bash
+# Auto-register as marketplace source
+# Note: Marketplace name is derived from directory name (e.g., ~/.agents/skills → npx-others-skills)
+claude plugin marketplace add ~/.agents/skills --scope user
+```
+
+**3. Skip skills that already exist in marketplace (marketplace takes precedence):**
+```bash
+# For each skill in ~/.agents/skills, check if it exists in marketplace
+for skill in ~/.agents/skills/*/; do
+  name=$(basename "$skill")
+  if claude plugin list --json 2>/dev/null | grep -q "\"$name\""; then
+    echo "SKIPPED: $name (exists in marketplace)"
+  fi
+done
+```
+
+**4. List available skills for user to enable:**
+```
+Available Skills in ~/.agents/skills
+──────────────────────
+Found {N} skills:
+
+  [ ] skill-name-1    ← description from SKILL.md
+  [ ] skill-name-2    ← description from SKILL.md
+  [ ] skill-name-3    ← description from SKILL.md
+
+Select skills to enable for this project (comma-separated numbers, or 'all'):
+```
+
+**Output:**
+```
+Registration Complete
+──────────────────────
+~/.agents/skills: registered as marketplace source (npx-others-skills)
+Skipped (marketplace precedence): {list}
+Skills enabled: {list}
 ```
 
 ---
@@ -85,7 +134,7 @@ Custom/offline (~/.claude/local-skills/): {count}
 3. `~/.claude/plugins/marketplaces/` → configured marketplace sources
 4. `references/skill-catalog.md` → known category mappings
 5. Fall back to reading SKILL.md `description` for uncataloged plugins
-6. `~/.agents/skills/` → locally installed skills not from marketplace
+6. `~/.agents/skills/` → user unified skills directory (npx installed)
 
 **Plugin ID format:** Always use `plugin-name@marketplace-name`. One plugin may contain multiple skills.
 
@@ -95,7 +144,7 @@ Custom/offline (~/.claude/local-skills/): {count}
 |--------|-----------|---------|
 | Marketplace plugin | `@marketplace` suffix in `claude plugin list` | install / disable / enable --scope project |
 | Available, not installed | In `claude plugin list --available` | install --scope project |
-| Locally installed (marketplace/npx) | In `~/.agents/skills/` | Managed via marketplace CLI or register as marketplace source |
+| User unified (npx) | In `~/.agents/skills/` | Register as `npx-others-skills` marketplace → `claude plugin disable/enable --scope project` |
 | Custom/offline | In `~/.claude/local-skills/` | Register as marketplace source → `claude plugin disable/enable --scope project` |
 
 **Keyword matching:** Match plugin description keywords against project features across dimensions: language, framework, tool, scenario, file type. Use `references/skill-catalog.md` first, then fall back to description reading.
@@ -120,9 +169,9 @@ Disable (project scope):
 Keep:
   {plugin}    ← {reason}
 
-Locally installed (~/.agents/skills/):
+User unified (~/.agents/skills/):
   {skill}    ← {reason}
-  → Register as marketplace source for per-project control
+  → Register as npx-others-skills marketplace for per-project control
 
 Custom/offline (~/.claude/local-skills/):
   {skill}    ← {reason}
@@ -131,9 +180,9 @@ Custom/offline (~/.claude/local-skills/):
 
 **Register local skills as marketplace source:**
 ```bash
-# For ~/.agents/skills/
+# For ~/.agents/skills/ (npx-others-skills)
 claude plugin marketplace add ~/.agents/skills --scope user
-claude plugin install {skill-name}@skills --scope project
+claude plugin install {skill-name}@npx-others-skills --scope project
 
 # For ~/.claude/local-skills/
 claude plugin marketplace add ~/.claude/local-skills --scope user
@@ -194,6 +243,11 @@ A complete session produces:
 2. **Global-scope operations need user confirmation** — affect all projects
 3. **Be cautious with disabling** — mark uncertain plugins as "keep"
 4. **Never break other projects** — project disables only write to `{project}/.claude/settings.json`
+
+## Notes
+
+- **Marketplace name**: When registering `~/.agents/skills`, the marketplace name is automatically derived from the directory name (e.g., `npx-others-skills`). This name is used in plugin references like `plugin-name@npx-others-skills`.
+- **Windows compatibility**: The skill uses bash commands which work in Unix-like environments. On Windows, ensure you're using a compatible shell (Git Bash, WSL, etc.).
 
 ---
 

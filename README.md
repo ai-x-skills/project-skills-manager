@@ -214,6 +214,7 @@ project-skills-manager/
 ## Prerequisites
 
 - Claude Code CLI (`claude plugin` commands available)
+- **Windows users**: Ensure you're using a compatible shell (Git Bash, WSL, or similar Unix-like environment)
 
 ## Related Skills
 

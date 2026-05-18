@@ -41,6 +41,6 @@
 | Tag | Meaning | Installation path | Management |
 |-----|---------|-------------------|------------|
 | `[Anthropic]` | Anthropic official marketplace | `~/.agents/skills/` (via `claude plugin install`) | `claude plugin disable/enable --scope project` |
-| `[npx]` | npx global install | `~/.agents/skills/` (via `npx skills add`) | Cannot disable per-project; register as marketplace source for management |
+| `[npx]` | npx global install | `~/.agents/skills/` (via `npx skills add`) | Register as `npx-others-skills` marketplace → `claude plugin disable/enable --scope project` |
 | `[custom]` | Custom marketplace | `~/.agents/skills/` (via `claude plugin install` from custom marketplace) | `claude plugin disable/enable --scope project` |
 | `[offline]` | Offline/manual install | `~/.claude/local-skills/` | Register as marketplace source → `claude plugin disable/enable --scope project` |
