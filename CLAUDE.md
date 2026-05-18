@@ -9,9 +9,9 @@ A Claude Code skill for intelligent per-project plugin management. Instead of al
 ## Key Files
 
 - `.claude-plugin/marketplace.json` — Marketplace manifest. Makes this repo a valid Claude Code marketplace.
-- `project-skills-manager/SKILL.md` — The skill instructions. Defines the workflow: diagnose project tech stack → recommend skills → execute via `claude plugin` CLI → verify.
-- `project-skills-manager/.claude-plugin/plugin.json` — Plugin manifest for official system recognition.
-- `project-skills-manager/references/skill-catalog.md` — Reference data for skill categorization.
+- `.claude-plugin/plugin.json` — Plugin manifest for official system recognition.
+- `SKILL.md` — The skill instructions. Defines the workflow: diagnose project tech stack → recommend skills → execute via `claude plugin` CLI → verify.
+- `references/skill-catalog.md` — Reference data for skill categorization.
 - `README.md` — Full documentation in Chinese.
 
 ## How It Works
@@ -39,7 +39,6 @@ claude plugin CLI (official plugin system)
 ## Dependencies
 
 - **Claude Code CLI** — `claude plugin` commands
-- **Python** — For reading project config files (if needed)
 
 ## Modifying the Skill
 

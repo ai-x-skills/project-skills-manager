@@ -69,30 +69,30 @@ skill 自动扫描项目技术栈
 ### 方式 1：npx 安装（推荐）
 
 ```bash
-npx skills add XaviLau/skills-management@project-skills-manager -g -y
+npx skills add ai-x-skills/project-skills-manager -g -y
 ```
 
 ### 方式 2：GitHub marketplace 安装
 
 ```bash
 # 添加 GitHub marketplace
-claude plugin marketplace add https://github.com/XaviLau/skills-management.git --scope user
+claude plugin marketplace add https://github.com/ai-x-skills/project-skills-manager.git --scope user
 
 # 安装 skill
-claude plugin install project-skills-manager@skills-management --scope user
+claude plugin install project-skills-manager@project-skills-manager --scope user
 ```
 
 ### 方式 3：本地目录安装
 
 ```bash
 # 克隆仓库
-git clone https://github.com/XaviLau/skills-management.git
+git clone https://github.com/ai-x-skills/project-skills-manager.git
 
 # 添加为本地 marketplace
-claude plugin marketplace add /path/to/skills-management --scope user
+claude plugin marketplace add /path/to/project-skills-manager --scope user
 
 # 安装 skill
-claude plugin install project-skills-manager@skills-management --scope user
+claude plugin install project-skills-manager@project-skills-manager --scope user
 ```
 
 ### 方式 4：手动安装
@@ -223,7 +223,7 @@ Project-level disables are stored in `{project}/.claude/settings.json` and do no
 ## 文件结构 / File Structure
 
 ```
-skills-management/
+project-skills-manager/
   .claude-plugin/
     marketplace.json           ← Marketplace 清单 / Marketplace manifest
     plugin.json                ← 插件清单 / Plugin manifest
