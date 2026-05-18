@@ -1,0 +1,24 @@
+{
+  "name": "skills-management",
+  "owner": {
+    "name": "XaviLau"
+  },
+  "metadata": {
+    "description": "Smart per-project skill management for Claude Code",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "project-skills-manager",
+      "description": "Smart per-project skill management for Claude Code. Analyzes project tech stack, recommends relevant skills, and manages plugin configuration using the official claude plugin CLI.",
+      "author": {
+        "name": "XaviLau"
+      },
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./"
+      ]
+    }
+  ]
+}

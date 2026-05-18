@@ -1,0 +1,6 @@
+{
+  "name": "project-skills-manager",
+  "version": "1.0.0",
+  "description": "Smart per-project skill management for Claude Code. Analyzes project tech stack, recommends relevant skills, and manages plugin configuration using the official claude plugin CLI.",
+  "author": { "name": "XaviLau" }
+}
